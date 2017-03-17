@@ -23,6 +23,6 @@ or with:
 The following is an screenshot of the rendered cube:
 
 <p align="center">
-	![Rendered cube](./ScreenShot/render.png)
+  <img src ="./ScreenShot/render.png" />
 </p>
 
