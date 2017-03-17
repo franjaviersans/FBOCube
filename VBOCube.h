@@ -4,15 +4,10 @@
 //
 // Complete history on bottom of file
 
-#ifndef FBOCube_H
-#define FBOCube_H
+#ifndef VBOCube_H
+#define VBOCube_H
 
 //Includes
-#define WORLD_COORD_LOCATION	0
-#define COLOR_COORD_LOCATION	1
-#define NORMAL_COORD_LOCATION	2
-#define TEXTURE_COORD_LOCATION	3
-
 
 /**
 * Class FBOCube.
@@ -27,7 +22,7 @@
 *				  |	/	    	| /
 *   v0(-.5,-.5,.5)*-------------*(.5,-.5,.5) v1
 */
-class FBOCube
+class VBOCube
 {
 	//Functions
 
@@ -35,7 +30,7 @@ class FBOCube
 		
 
 		///Default destructor
-		~FBOCube();
+		~VBOCube();
 
 		///Method to Draw the Quad
 		void Draw();
@@ -53,21 +48,20 @@ class FBOCube
 		void Init();
 
 		///Creates an instance of the model
-		static FBOCube* Instance() ;
+		static VBOCube & Instance() ;
 
 	private:
 
 		///Default constructor
-		FBOCube();
+		VBOCube();
 
 	//Variables
 
 	private:
-		static FBOCube * m_cube;
 		GLuint m_iVAO;
 		GLuint m_iVBO;
 		GLuint m_iVBOIndex;
 };
 
 
-#endif //FBOCube_H
+#endif //VBOCube_H

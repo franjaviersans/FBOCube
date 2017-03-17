@@ -6,29 +6,26 @@
 
 #define FILE_REVISION "$Revision: $"
 
-#include "FBOCube.h"
-
-// Global static pointer used to ensure a single instance of the class.
-FBOCube * FBOCube::m_cube = NULL;
+#include "VBOCube.h"
 
 /**
-* Class FBOCube.
-* Creates a Cube using FBO with the corresponding texture coordinates
+* Class VBOCube.
+* Creates a Cube using VBO with the corresponding texture coordinates
 *
-*					(-.5,.5,-.5) v7		(.5,.5,-.5) v6
-*					 *-------------* 
-*				   / |		     / |
-*	 v3(-.5,.5,.5)*-------------*(.5,.5,.5) v2
-*	(-.5,-.5,-.5) |v4|          |  |
-*				  |	 *----------|--* (.5,-.5,-.5) v5
-*				  |	/	    	| /
-*   v0(-.5,-.5,.5)*-------------*(.5,-.5,.5) v1
+*             0,1,1) v7     (1,1,1) v6
+*                    *-------------* 
+*                  / |            /|
+*        v3(0,1,0)*-------------*(1,1,0) v2
+*      |v4|(0,0,1)|  |          |  |
+*                 |  *----------|--* (1,0,1) v5
+*                 | /           | /
+*        v0(0,0,0)*-------------*(1,0,0) v1
 */
 
 /**
 * Default constructor
 */
-FBOCube::FBOCube()
+VBOCube::VBOCube()
 {
 
 	Init();
@@ -38,7 +35,7 @@ FBOCube::FBOCube()
 /**
 * Default destructor
 */
-FBOCube::~FBOCube()
+VBOCube::~VBOCube()
 {
 
 	glDeleteBuffers(1, &m_iVBO);
@@ -49,21 +46,21 @@ FBOCube::~FBOCube()
 /**
 * Method to Init cube
 */
-void FBOCube::Init(){
+void VBOCube::Init(){
 
 
 	GLfloat Vertex[] = {//World					//Color
-						-0.5f,-0.5f,0.5f,		0.0f,0.0f,1.0f,	//v0
-						0.5f,-0.5f,0.5f,			1.0f,0.0f,1.0f,	//v1
-						0.5f,0.5f,0.5f,			1.0f,1.0f,1.0f,	//v2
-						-0.5f,0.5f,0.5f,			0.0f,1.0f,1.0f,	//v3
-						-0.5f,-0.5f,-0.5f,		0.0f,0.0f,0.0f,	//v4
-						0.5f,-0.5f,-0.5f,		1.0f,0.0f,0.0f,	//v5
-						0.5f,0.5f,-0.5f,			1.0f,1.0f,0.0f,	//v6
-						-0.5f,0.5f,-0.5f,		0.0f,1.0f,0.0f,	//v7
+						-0.5f,-0.5f,0.5f,		0.0f,0.0f,0.0f,	//v0
+						0.5f,-0.5f,0.5f,		1.0f,0.0f,0.0f,	//v1
+						0.5f,0.5f,0.5f,			1.0f,1.0f,0.0f,	//v2
+						-0.5f,0.5f,0.5f,		0.0f,1.0f,0.0f,	//v3
+						-0.5f,-0.5f,-0.5f,		0.0f,0.0f,1.0f,	//v4
+						0.5f,-0.5f,-0.5f,		1.0f,0.0f,1.0f,	//v5
+						0.5f,0.5f,-0.5f,		1.0f,1.0f,1.0f,	//v6
+						-0.5f,0.5f,-0.5f,		0.0f,1.0f,1.0f,	//v7
 						}; 
 
-	GLuint Indices[] = {			0,1,2,0,2,3,	//front
+	GLuint Indices[] = {0,1,2,0,2,3,	//front
 						4,7,6,4,6,5,	//back
 						4,0,3,4,3,7,	//left
 						1,5,6,1,6,2,	//right
@@ -99,8 +96,8 @@ void FBOCube::Init(){
 
 		glEnableVertexAttribArray(WORLD_COORD_LOCATION);
 		glVertexAttribPointer(WORLD_COORD_LOCATION, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 6, BUFFER_OFFSET(0)); //Vertex
-		glEnableVertexAttribArray(COLOR_COORD_LOCATION);
-		glVertexAttribPointer(COLOR_COORD_LOCATION, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 6, BUFFER_OFFSET(sizeof(GL_FLOAT) * 3)); //Colors	
+		glEnableVertexAttribArray(TEXTURE_COORD_LOCATION);
+		glVertexAttribPointer(TEXTURE_COORD_LOCATION, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 6, BUFFER_OFFSET(sizeof(GL_FLOAT) * 3)); //Texture	
 		
 	//Unbind the vertex array	
 	glBindVertexArray(0);
@@ -114,7 +111,7 @@ void FBOCube::Init(){
 /**
 * Method to Draw the Cube
 */
-void FBOCube::Draw()
+void VBOCube::Draw()
 {
 	
 	glBindVertexArray(m_iVAO);
@@ -127,7 +124,7 @@ void FBOCube::Draw()
 /**
 * Method to Setup rendering cube
 */
-void FBOCube::Setup()
+void VBOCube::Setup()
 {
 	glBindVertexArray(m_iVAO);
 }
@@ -135,7 +132,7 @@ void FBOCube::Setup()
 /**
 * Method to only draw cube
 */
-void FBOCube::OnlyDraw()
+void VBOCube::OnlyDraw()
 {
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 }
@@ -143,7 +140,7 @@ void FBOCube::OnlyDraw()
 /** 
 * Method to Stop rendering cube
 */
-void FBOCube::Stop()
+void VBOCube::Stop()
 {
 	glBindVertexArray(0);
 }
@@ -153,10 +150,10 @@ void FBOCube::Stop()
 *
 * @return an instance of this class
 */
-FBOCube * FBOCube::Instance() 
+VBOCube & VBOCube::Instance() 
 {
-	if (!m_cube)   // Only allow one instance of class to be generated.
-		 m_cube = new FBOCube;
+	static VBOCube m_cube;	// Guaranteed to be destroyed.
+							// Instantiated on first use.
  
    return m_cube;
 
@@ -164,8 +161,3 @@ FBOCube * FBOCube::Instance()
 }
 
 #undef FILE_REVISION
-
-// Revision History:
-// $Log: $
-// $Header: $
-// $Id: $
