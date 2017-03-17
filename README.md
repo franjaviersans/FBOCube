@@ -22,4 +22,7 @@ or with:
 
 The following is an screenshot of the rendered cube:
 
-![Rendered cube](./ScreenShot/render.png)
+<p align="center">
+	![Rendered cube](./ScreenShot/render.png)
+</p>
+
